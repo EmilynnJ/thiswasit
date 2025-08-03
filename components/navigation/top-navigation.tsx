@@ -20,6 +20,7 @@ import {
 import { Button } from "@/components/ui/button"
 import { ThemeToggle } from "@/components/theme-toggle"
 import { NotificationsDropdown } from "@/components/notifications/notifications-dropdown"
+import { SignedIn, SignedOut, UserButton } from "@clerk/nextjs"
 
 export function TopNavigation() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -82,15 +83,16 @@ export function TopNavigation() {
                 <span className="text-2xl font-alex-brush text-pink-400 title-glow">SoulSeer</span>
               </Link>
 
-              <Link href="/auth">
-                <Button variant="ghost" className="text-gray-300 hover:text-white">
-                  Sign In
-                </Button>
-              </Link>
-
-              <Link href="/auth?tab=signup">
-                <Button className="bg-pink-400 hover:bg-pink-500 text-black">Sign Up</Button>
-              </Link>
+              <SignedOut>
+                <Link href="/sign-in">
+                  <Button variant="ghost" className="text-gray-300 hover:text-white">
+                    Sign In
+                  </Button>
+                </Link>
+                <Link href="/sign-up">
+                  <Button className="bg-pink-400 hover:bg-pink-500 text-black">Sign Up</Button>
+                </Link>
+              </SignedOut>
             </div>
 
             {/* Center - Main Navigation */}
@@ -113,8 +115,11 @@ export function TopNavigation() {
             </div>
 
             {/* Right Side - Theme and Notifications */}
-            <div className="flex items-center gap-2">
-              <NotificationsDropdown />
+            <div className="flex items-center gap-4">
+              <SignedIn>
+                <UserButton afterSignOutUrl="/" />
+                <NotificationsDropdown />
+              </SignedIn>
               <ThemeToggle />
             </div>
           </div>
@@ -184,14 +189,19 @@ export function TopNavigation() {
 
               {/* Auth Buttons */}
               <div className="flex flex-col gap-2 mt-4 pt-4 border-t border-gray-800">
-                <Link href="/auth" onClick={() => setIsMenuOpen(false)}>
-                  <Button variant="outline" className="w-full border-gray-700 text-gray-300">
-                    Sign In
-                  </Button>
-                </Link>
-                <Link href="/auth?tab=signup" onClick={() => setIsMenuOpen(false)}>
-                  <Button className="w-full bg-pink-400 hover:bg-pink-500 text-black">Sign Up</Button>
-                </Link>
+                <SignedOut>
+                  <Link href="/sign-in" onClick={() => setIsMenuOpen(false)}>
+                    <Button variant="outline" className="w-full border-gray-700 text-gray-300">
+                      Sign In
+                    </Button>
+                  </Link>
+                  <Link href="/sign-up" onClick={() => setIsMenuOpen(false)}>
+                    <Button className="w-full bg-pink-400 hover:bg-pink-500 text-black">Sign Up</Button>
+                  </Link>
+                </SignedOut>
+                <SignedIn>
+                  {/* The UserButton can be placed here if needed, or rely on the desktop one */}
+                </SignedIn>
               </div>
 
               {/* Theme Toggle */}

@@ -10,20 +10,20 @@ export function HeroSection() {
         <h1 className="font-alex-brush text-5xl md:text-7xl text-pink-400 mb-4 heading-glow">SoulSeer</h1>
 
         {/* Hero image between header and tagline */}
-        <div className="w-24 h-24 mx-auto my-6 relative">
+        <div className="w-48 h-48 mx-auto my-6 relative rounded-full overflow-hidden border-2 border-pink-400/50 shadow-lg">
           <Image
-            src="/mystical-orb.png"
-            alt="Crystal Ball"
-            width={96}
-            height={96}
-            className="object-contain"
+            src="https://i.postimg.cc/tRLSgCPb/HERO-IMAGE-1.jpg"
+            alt="SoulSeer Hero Image"
+            layout="fill"
+            objectFit="cover"
+            className="object-center"
           />
         </div>
 
         <h2 className="font-playfair text-xl md:text-2xl text-white mb-8">A Community of Gifted Psychics</h2>
 
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
-          <Link href="/auth?tab=signup">
+          <Link href="/sign-up">
             <Button className="bg-pink-400 hover:bg-pink-500 text-black px-8 py-6 text-lg">Get a Reading</Button>
           </Link>
           <Link href="/readers">

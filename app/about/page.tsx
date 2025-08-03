@@ -11,8 +11,7 @@ export default function AboutPage() {
       name: "Emilynn",
       role: "Founder & Lead Psychic",
       bio: "Psychic medium and founder of SoulSeer, Emilynn created this platform to provide ethical, compassionate guidance while ensuring fair treatment for readers.",
-      image:
-        "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Picsart_25-03-12_11-39-59-336%20%281%29.jpg-1Lezi0BrXwHa1U7rsxRYvs4U6npHIc.jpeg",
+      image: "https://i.postimg.cc/s2ds9RtC/FOUNDER.jpg",
     },
     {
       name: "Orion Starlight",
@@ -45,7 +44,7 @@ export default function AboutPage() {
             <div className="md:flex">
               <div className="md:w-1/2 relative h-64 md:h-auto">
                 <Image
-                  src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Picsart_25-03-12_11-39-59-336%20%281%29.jpg-1Lezi0BrXwHa1U7rsxRYvs4U6npHIc.jpeg"
+                  src="https://i.postimg.cc/s2ds9RtC/FOUNDER.jpg"
                   alt="Emilynn - Founder of SoulSeer"
                   fill
                   className="object-cover p-8"

@@ -36,8 +36,8 @@
   }
 
   .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
+    --background: 222.2 84% 4.9%; /* Dark Blue/Black */
+    --foreground: 210 40% 98%; /* White */
 
     --card: 222.2 84% 4.9%;
     --card-foreground: 210 40% 98%;
@@ -45,24 +45,24 @@
     --popover: 222.2 84% 4.9%;
     --popover-foreground: 210 40% 98%;
 
-    --primary: 210 40% 98%;
-    --primary-foreground: 222.2 47.4% 11.2%;
+    --primary: 330 100% 71%; /* Hot Pink */
+    --primary-foreground: 0 0% 10%; /* Dark Text for contrast on Pink */
 
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
+    --secondary: 330 30% 20%; /* Dark, muted pink */
+    --secondary-foreground: 210 40% 98%; /* White text */
 
-    --muted: 217.2 32.6% 17.5%;
+    --muted: 330 10% 20%;
     --muted-foreground: 215 20.2% 65.1%;
 
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
+    --accent: 51 100% 50%; /* Gold */
+    --accent-foreground: 0 0% 10%; /* Dark text for contrast on Gold */
 
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 210 40% 98%;
 
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 212.7 26.8% 83.9%;
+    --border: 330 10% 25%; /* Dark pinkish gray */
+    --input: 330 10% 25%;
+    --ring: 330 100% 71%; /* Hot Pink */
   }
 }
 
@@ -82,12 +82,12 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background-image: url("https://i.postimg.cc/rFx6kyM3/background-image.png");
+    background-image: url("https://i.postimg.cc/sXdsKGTK/DALL-E-2025-06-06-14-36-29-A-vivid-ethereal-background-image-designed-for-a-psychic-reading-app.webp");
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
     z-index: -1;
-    opacity: 1;
+    opacity: 0.5; /* Reduced opacity for better text readability */
   }
 }
 
