@@ -1,61 +1,21 @@
-import { type NextRequest, NextResponse } from "next/server"
-import {
-  getFeaturedProducts,
-  getProductsByType,
-  searchProducts,
-  createProduct,
-} from "@/lib/repositories/product-repository"
+import { NextResponse } from 'next/server';
 
-export async function GET(request: NextRequest) {
-  try {
-    const searchParams = request.nextUrl.searchParams
-    const query = searchParams.get("query")
-    const type = searchParams.get("type") as "digital" | "physical" | "service" | null
-    const featured = searchParams.get("featured") === "true"
-    const limit = Number.parseInt(searchParams.get("limit") || "20", 10)
+export async function GET(req: Request) {
+  // Mock Data
+  const mockProducts = [
+    // Digital
+    { id: 'prod_digital_1', name: 'Cosmic Alignment Meditation', description: 'A guided meditation to help you align with cosmic energies.', price: 12.99, product_type: 'DIGITAL', author: 'Mystic Luna' },
+    { id: 'prod_digital_2', name: 'Chakra Balancing Guide', description: 'Comprehensive digital guide to balance your chakras.', price: 19.99, product_type: 'DIGITAL', author: 'Celestial Sage' },
+    { id: 'prod_digital_3', name: 'Tarot Interpretation Handbook', description: 'Learn to interpret tarot cards with this detailed handbook.', price: 24.99, product_type: 'DIGITAL', author: 'Aura Whisperer' },
+    // Physical
+    { id: 'prod_physical_1', name: 'Crystal Healing Set', description: 'Set of 7 healing crystals for chakra alignment.', price: 49.99, product_type: 'PHYSICAL' },
+    { id: 'prod_physical_2', name: 'Celestial Tarot Deck', description: 'Hand-illustrated tarot deck with cosmic imagery.', price: 34.99, product_type: 'PHYSICAL' },
+    { id: 'prod_physical_3', name: 'Aura Cleansing Incense Bundle', description: 'Premium incense sticks for cleansing your space.', price: 18.99, product_type: 'PHYSICAL' },
+    // Services
+    { id: 'prod_service_1', name: 'Personalized Birth Chart Analysis', description: 'Detailed analysis of your astrological birth chart.', price: 79.99, product_type: 'SERVICE', author: 'Mystic Luna' },
+    { id: 'prod_service_2', name: 'Past Life Regression Session', description: 'Guided session to explore your past lives.', price: 129.99, product_type: 'SERVICE', author: 'Cosmic Guide' },
+    { id: 'prod_service_3', name: '30-Day Spiritual Development Course', description: 'Structured course to develop your spiritual abilities.', price: 199.99, product_type: 'SERVICE', author: 'Celestial Sage' },
+  ];
 
-    let products
-
-    if (query) {
-      products = await searchProducts(query, limit)
-    } else if (featured) {
-      products = await getFeaturedProducts(limit)
-    } else if (type) {
-      products = await getProductsByType(type, limit)
-    } else {
-      // Default to featured products
-      products = await getFeaturedProducts(limit)
-    }
-
-    return NextResponse.json({ products })
-  } catch (error) {
-    console.error("Error fetching products:", error)
-    return NextResponse.json({ error: "Failed to fetch products" }, { status: 500 })
-  }
-}
-
-export async function POST(request: NextRequest) {
-  try {
-    const body = await request.json()
-    const { name, description, price, product_type, image_url, is_featured, stock_quantity } = body
-
-    if (!name || !price || !product_type) {
-      return NextResponse.json({ error: "Missing required fields" }, { status: 400 })
-    }
-
-    const product = await createProduct({
-      name,
-      description,
-      price,
-      product_type,
-      image_url,
-      is_featured,
-      stock_quantity,
-    })
-
-    return NextResponse.json({ product })
-  } catch (error) {
-    console.error("Error creating product:", error)
-    return NextResponse.json({ error: "Failed to create product" }, { status: 500 })
-  }
+  return NextResponse.json(mockProducts);
 }

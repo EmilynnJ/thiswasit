@@ -5,8 +5,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { DollarSign, Users, Clock, Calendar, Star } from "lucide-react"
 import Link from "next/link"
-import { useToast } from "@/hooks/use-toast"
-import { useAuth } from "@/contexts/auth-context"
+import { useToast } from "@/components/ui/use-toast"
+import { useUser } from "@clerk/nextjs"
 
 interface ClientDashboardProps {
   initialData?: any
@@ -25,13 +25,13 @@ export function ClientDashboard({ initialData }: ClientDashboardProps) {
     },
   )
   const { toast } = useToast()
-  const { user } = useAuth()
+  const { user } = useUser()
 
   useEffect(() => {
-    if (!initialData) {
+    if (!initialData && user) {
       fetchDashboardData()
     }
-  }, [initialData])
+  }, [initialData, user])
 
   const fetchDashboardData = async () => {
     try {
@@ -203,6 +203,22 @@ export function ClientDashboard({ initialData }: ClientDashboardProps) {
           </Link>
         </div>
       )}
+
+      <Card className="glass-card">
+        <CardHeader>
+          <CardTitle className="text-xl font-playfair">My Reading Notes</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <p className="text-sm text-gray-400 mb-4">
+            A private space to jot down thoughts, questions, and insights from your readings.
+          </p>
+          <textarea
+            className="w-full h-40 p-4 rounded-md bg-black/30 border border-gray-700 focus:ring-pink-400 focus:border-pink-400 font-playfair"
+            placeholder="Start typing your notes here..."
+          />
+          <Button className="mt-4 bg-pink-500 hover:bg-pink-600 w-full sm:w-auto">Save Notes</Button>
+        </CardContent>
+      </Card>
     </div>
   )
 }

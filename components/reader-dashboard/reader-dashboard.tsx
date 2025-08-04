@@ -5,11 +5,12 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { DollarSign, Users, Clock, Star, ChevronRight } from "lucide-react"
 import Link from "next/link"
-import { useToast } from "@/hooks/use-toast"
-import { useAuth } from "@/contexts/auth-context"
+import { useToast } from "@/components/ui/use-toast"
+import { useUser } from "@clerk/nextjs"
 import { ReadingRequestCard } from "./reading-request-card"
 import { UpcomingSessionCard } from "./upcoming-session-card"
 import { RevenueChart } from "./revenue-chart"
+import { StatusToggle } from "./status-toggle"
 
 interface ReaderDashboardProps {
   initialData?: any
@@ -38,13 +39,13 @@ export function ReaderDashboard({ initialData }: ReaderDashboardProps) {
     },
   )
   const { toast } = useToast()
-  const { user } = useAuth()
+  const { user } = useUser()
 
   useEffect(() => {
-    if (!initialData) {
+    if (!initialData && user) {
       fetchDashboardData()
     }
-  }, [initialData])
+  }, [initialData, user])
 
   const fetchDashboardData = async () => {
     try {
@@ -77,6 +78,10 @@ export function ReaderDashboard({ initialData }: ReaderDashboardProps) {
 
   return (
     <div className="space-y-6">
+      <div className="flex justify-between items-center mb-6">
+        <h2 className="text-2xl font-alex-brush text-pink-400">Welcome back, Reader!</h2>
+        <StatusToggle />
+      </div>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         <Card className="glass-card">
           <CardHeader className="flex flex-row items-center justify-between pb-2">

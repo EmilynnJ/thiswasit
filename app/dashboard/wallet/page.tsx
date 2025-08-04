@@ -9,6 +9,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Loader2 } from 'lucide-react';
 import { useToast } from '@/components/ui/use-toast';
+import { TransactionHistoryTable } from '@/components/client-dashboard/transaction-history-table';
 
 export default function WalletPage() {
   const { user } = useUser();
@@ -115,6 +116,8 @@ export default function WalletPage() {
             </form>
           </CardContent>
         </Card>
+
+        <TransactionHistoryTable />
       </div>
     </PageContainer>
   );
