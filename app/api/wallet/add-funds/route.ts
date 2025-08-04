@@ -1,32 +1,63 @@
-import { type NextRequest, NextResponse } from "next/server"
-import { addFunds } from "@/lib/services/wallet-service"
+import { NextResponse } from 'next/server';
+import { auth } from '@clerk/nextjs/server';
+import Stripe from 'stripe';
+import { PrismaClient } from '@prisma/client';
 
-export async function POST(request: NextRequest) {
+const prisma = new PrismaClient();
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
+  apiVersion: '2024-06-20',
+});
+
+export async function POST(req: Request) {
   try {
-    const body = await request.json()
-    const { userId, amount, paymentMethodId } = body
+    const { userId } = auth();
+    const { amount, description } = await req.json();
 
-    if (!userId || !amount) {
-      return NextResponse.json({ success: false, error: "Missing required fields" }, { status: 400 })
+    if (!userId) {
+      return new NextResponse('Unauthorized', { status: 401 });
     }
 
-    // In a real app, you would process the payment with Stripe here
-    // For now, we'll simulate a successful payment
-    const transactionId = `txn_${Date.now()}`
-
-    const result = await addFunds(Number(userId), Number(amount), transactionId)
-
-    if (!result.success) {
-      return NextResponse.json({ success: false, error: result.error }, { status: 400 })
+    if (!amount || amount <= 0) {
+        return new NextResponse('Bad Request: Invalid amount', { status: 400 });
     }
 
-    return NextResponse.json({
-      success: true,
-      newBalance: result.newBalance,
-      transactionId,
-    })
-  } catch (error: any) {
-    console.error("Error adding funds:", error)
-    return NextResponse.json({ success: false, error: error.message || "Failed to add funds" }, { status: 500 })
+    const user = await prisma.user.findUnique({
+      where: { clerkId: userId },
+    });
+
+    if (!user) {
+        return new NextResponse('User not found', { status: 404 });
+    }
+
+    const line_items: Stripe.Checkout.SessionCreateParams.LineItem[] = [{
+        price_data: {
+            currency: 'usd',
+            product_data: {
+                name: description || 'Add funds to wallet',
+            },
+            unit_amount: Math.round(amount * 100), // Amount in cents
+        },
+        quantity: 1,
+    }];
+
+
+    const session = await stripe.checkout.sessions.create({
+      payment_method_types: ['card'],
+      line_items,
+      mode: 'payment',
+      success_url: `${process.env.NEXT_PUBLIC_APP_URL}/dashboard/wallet?success=true`,
+      cancel_url: `${process.env.NEXT_PUBLIC_APP_URL}/dashboard/wallet?canceled=true`,
+      metadata: {
+        userId: user.id, // Pass internal user ID
+        clerkUserId: userId, // Pass Clerk user ID
+        amount: amount,
+      },
+    });
+
+    return NextResponse.json({ url: session.url });
+
+  } catch (error) {
+    console.error('[ADD_FUNDS_POST]', error);
+    return new NextResponse('Internal Server Error', { status: 500 });
   }
 }
